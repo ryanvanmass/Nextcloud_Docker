@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    volumes:
+      - "/Nextcloud/mysql:/var/lib/mysql"
+    environment: 
+      MYSQL_ROOT_PASSWORD: nopassword
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: always
+    ports: 
+      - 80:80
+      - 443:443
+    volumes:
+      - "/Nextcloud/nextcloud:/var/www/html"
+      - "/Nextcloud/mysql:/var/lib/mysql"
+    links:
+      - mysql:mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: root
+      MYSQL_PASSWORD: nopassword
+    depends_on:
+      - mysql
+
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: onlyoffice
+    restart: always
+    ports: 
+      - 85:80
+    volumes:
+      - "/Nextcloud/onlyoffice:/var/log/onlyoffice"
