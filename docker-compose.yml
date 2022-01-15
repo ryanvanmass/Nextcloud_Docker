@@ -9,6 +9,17 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: nopassword
 
+
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: onlyoffice
+    restart: always
+    ports: 
+      - 85:80
+    volumes:
+      - "/Nextcloud/onlyoffice:/var/log/onlyoffice"
+
+
   nextcloud:
     image: nextcloud:latest
     container_name: nextcloud
@@ -28,12 +39,3 @@ services:
       MYSQL_PASSWORD: nopassword
     depends_on:
       - mysql
-
-  onlyoffice:
-    image: onlyoffice/documentserver:latest
-    container_name: onlyoffice
-    restart: always
-    ports: 
-      - 85:80
-    volumes:
-      - "/Nextcloud/onlyoffice:/var/log/onlyoffice"
